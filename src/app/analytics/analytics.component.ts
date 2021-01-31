@@ -18,13 +18,16 @@ export class AnalyticsComponent implements OnInit {
   datos: CurrentIndicators = new CurrentIndicators();
   dataSource = null;
   currentDate = new Date();
-
+  loading: boolean = false;
+  notAvailableIndicators: boolean = false;
   apiNotAvailableErr = '';
 
   constructor(private analyticsService: AnalyticsService,
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    this.loading = true;
 
     this.activatedRoute.params.subscribe(params => {
       let asset = params['asset']
@@ -33,7 +36,14 @@ export class AnalyticsComponent implements OnInit {
           .pipe(
             tap(indicators => {
               this.datos = indicators;
+
+              if (this.datos['ma-and-price-position'] === '' && this.datos['three-ma'] === ''
+                && this.datos['news-emotions'] === '' && this.datos['three-ma-and-news-emotions']) {
+                this.notAvailableIndicators = true;
+              }
+
               console.log('AnalyticsComponent: registered');
+              this.loading = false;
             }),
             catchError(e => {
 
@@ -45,6 +55,8 @@ export class AnalyticsComponent implements OnInit {
 
               console.error(e.error);
               // swal.fire('Conexión fallida', e.error, 'error');
+
+              this.loading = false;
               return throwError(e);
             })
           ).subscribe();

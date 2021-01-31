@@ -16,91 +16,105 @@
       <tr>
         <td>Posición de medias móviles y emociones</td>
         <td>
-          <div *ngIf="datos['ma-and-price-position']==='RISE'">
+          <div *ngIf="datos['ma-and-price-position']==='RISE' && !loading">
             <span class="badge badge-success even-larger-badge">
               Compra
             </span>
           </div>
-          <div *ngIf="datos['ma-and-price-position']==='DROP'">
+          <div *ngIf="datos['ma-and-price-position']==='DROP' && !loading">
             <span class="badge badge-danger even-larger-badge">
               Vende
             </span>
           </div>
-          <div *ngIf="datos['ma-and-price-position']!='RISE' && datos['ma-and-price-position']!='SELL'">
+          <div *ngIf="datos['ma-and-price-position']!='RISE' && datos['ma-and-price-position']!='SELL' && !loading">
             <span class="badge badge-secondary even-larger-badge">
               N/A
             </span>
+          </div>
+          <div *ngIf="loading" class="fluid-container d-flex justify-content-center" style="margin-left:auto; margin-right:auto;">
+            <mat-spinner [diameter]="20"></mat-spinner>
           </div>
         </td>
       </tr>
       <tr>
         <td>Tres medias móviles</td>
         <td>
-          <div *ngIf="datos['three-ma']==='BUY'">
+          <div *ngIf="datos['three-ma']==='BUY' && !loading">
             <span class="badge badge-success even-larger-badge">
               Compra
             </span>
           </div>
-          <div *ngIf="datos['three-ma']==='SELL'">
+          <div *ngIf="datos['three-ma']==='SELL' && !loading">
             <span class="badge badge-danger even-larger-badge">
               Vende
             </span>
           </div>
-          <div *ngIf="datos['three-ma']!='BUY' && datos['three-ma']!='SELL'">
+          <div *ngIf="datos['three-ma']!='BUY' && datos['three-ma']!='SELL' && !loading">
             <span class=" badge badge-secondary even-larger-badge">
               N/A
             </span>
+          </div>
+          <div *ngIf="loading" class="fluid-container d-flex justify-content-center" style="margin-left:auto; margin-right:auto;">
+            <mat-spinner [diameter]="20"></mat-spinner>
           </div>
         </td>
       </tr>
       <tr>
         <td>Emociones</td>
         <td>
-          <div *ngIf="datos['news-emotions']==='BUY'">
+          <div *ngIf="datos['news-emotions']==='BUY' && !loading">
             <span class="badge badge-success even-larger-badge">
               Compra
             </span>
           </div>
-          <div *ngIf="datos['news-emotions']==='SELL'">
+          <div *ngIf="datos['news-emotions']==='SELL' && !loading">
             <span class="badge badge-danger even-larger-badge">
               Vende
             </span>
           </div>
-          <div *ngIf="datos['news-emotions']!='BUY' && datos['news-emotions']!='SELL'">
+          <div *ngIf="datos['news-emotions']!='BUY' && datos['news-emotions']!='SELL' && !loading">
             <span class=" badge badge-secondary even-larger-badge">
               N/A
             </span>
+          </div>
+          <div *ngIf="loading" class="fluid-container d-flex justify-content-center" style="margin-left:auto; margin-right:auto;">
+            <mat-spinner [diameter]="20"></mat-spinner>
           </div>
         </td>
       </tr>
       <tr>
         <td>Combinación de tres medias móviles y emociones
         <td>
-          <div *ngIf="datos['three-ma-and-news-emotions']==='BUY'">
+          <div *ngIf="datos['three-ma-and-news-emotions']==='BUY' && !loading">
             <span class="badge badge-success even-larger-badge">
               Compra
             </span>
           </div>
-          <div *ngIf="datos['three-ma-and-news-emotions']==='SELL'">
+          <div *ngIf="datos['three-ma-and-news-emotions']==='SELL' && !loading">
             <span class="badge badge-danger even-larger-badge">
               Vende
             </span>
           </div>
-          <div *ngIf="datos['three-ma-and-news-emotions']!='BUY' && datos['three-ma-and-news-emotions']!='SELL'">
+          <div *ngIf="datos['three-ma-and-news-emotions']!='BUY' && datos['three-ma-and-news-emotions']!='SELL' && !loading">
             <span class=" badge badge-secondary even-larger-badge">
               N/A
             </span>
           </div>
-        </td>
-      <tr>
-        <td>
-          <div *ngIf="apiNotAvailableErr!=''" class="container">
-            <span class="badge badge-danger" style="font-size:13px;">
-              {{apiNotAvailableErr}}
-            </span>
+          <div *ngIf="loading" class="fluid-container d-flex justify-content-center" style="margin-left:auto; margin-right:auto;">
+            <mat-spinner [diameter]="20"></mat-spinner>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+<div *ngIf="apiNotAvailableErr!=''" class="container-fluid d-flex justify-content-center" style="margin-top:20px;">
+  <span class="badge badge-danger" style="font-size:13px;">
+    {{apiNotAvailableErr}}
+  </span>
+</div>
+<div *ngIf="notAvailableIndicators" class="container-fluid d-flex justify-content-center" style="margin-top:20px;">
+  <span class="badge badge-warning" style="font-size:13px;">
+    {{apiNotAvailableErr}}
+  </span>
 </div>
