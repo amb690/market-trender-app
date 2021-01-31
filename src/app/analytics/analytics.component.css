@@ -1,0 +1,28 @@
+#current-indicators-table {
+  width: 30%;
+  margin: 0 auto;
+  border-style: none;
+}
+
+.borderless td, .borderless th {
+  border: none;
+}
+
+.table td, .table th {
+  text-align: center;
+}
+
+.table th {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+}
+
+#current-indicators {
+  display: flex;
+  justify-content: center;
+}
+
+.even-larger-badge {
+  font-size: 12px;
+}

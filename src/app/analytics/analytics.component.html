@@ -1,0 +1,106 @@
+<div>
+  <h1 id="current-indicators" style="font-style:bold;">
+    Indicadores del día {{currentDate | date:'dd-MM-yyyy'}}
+  </h1>
+  <hr>
+</div>
+<div id="current-indicators" class="container-fluid">
+  <table id="current-indicators-table" class="table borderless">
+    <thead>
+      <tr>
+        <th>Estrategia</th>
+        <th>Indicador</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Posición de medias móviles y emociones</td>
+        <td>
+          <div *ngIf="datos['ma-and-price-position']==='RISE'">
+            <span class="badge badge-success even-larger-badge">
+              Compra
+            </span>
+          </div>
+          <div *ngIf="datos['ma-and-price-position']==='DROP'">
+            <span class="badge badge-danger even-larger-badge">
+              Vende
+            </span>
+          </div>
+          <div *ngIf="datos['ma-and-price-position']!='RISE' && datos['ma-and-price-position']!='SELL'">
+            <span class="badge badge-secondary even-larger-badge">
+              N/A
+            </span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Tres medias móviles</td>
+        <td>
+          <div *ngIf="datos['three-ma']==='BUY'">
+            <span class="badge badge-success even-larger-badge">
+              Compra
+            </span>
+          </div>
+          <div *ngIf="datos['three-ma']==='SELL'">
+            <span class="badge badge-danger even-larger-badge">
+              Vende
+            </span>
+          </div>
+          <div *ngIf="datos['three-ma']!='BUY' && datos['three-ma']!='SELL'">
+            <span class=" badge badge-secondary even-larger-badge">
+              N/A
+            </span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Emociones</td>
+        <td>
+          <div *ngIf="datos['news-emotions']==='BUY'">
+            <span class="badge badge-success even-larger-badge">
+              Compra
+            </span>
+          </div>
+          <div *ngIf="datos['news-emotions']==='SELL'">
+            <span class="badge badge-danger even-larger-badge">
+              Vende
+            </span>
+          </div>
+          <div *ngIf="datos['news-emotions']!='BUY' && datos['news-emotions']!='SELL'">
+            <span class=" badge badge-secondary even-larger-badge">
+              N/A
+            </span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>Combinación de tres medias móviles y emociones
+        <td>
+          <div *ngIf="datos['three-ma-and-news-emotions']==='BUY'">
+            <span class="badge badge-success even-larger-badge">
+              Compra
+            </span>
+          </div>
+          <div *ngIf="datos['three-ma-and-news-emotions']==='SELL'">
+            <span class="badge badge-danger even-larger-badge">
+              Vende
+            </span>
+          </div>
+          <div *ngIf="datos['three-ma-and-news-emotions']!='BUY' && datos['three-ma-and-news-emotions']!='SELL'">
+            <span class=" badge badge-secondary even-larger-badge">
+              N/A
+            </span>
+          </div>
+        </td>
+      <tr>
+        <td>
+          <div *ngIf="apiNotAvailableErr!=''" class="container">
+            <span class="badge badge-danger" style="font-size:13px;">
+              {{apiNotAvailableErr}}
+            </span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
