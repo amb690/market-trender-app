@@ -1,6 +1,6 @@
 #current-indicators-table {
   width: 30%;
-  margin: 0 auto;
+  margin: 1 auto;
   border-style: none;
 }
 
@@ -25,4 +25,29 @@
 
 .even-larger-badge {
   font-size: 12px;
+}
+
+.date-form-field {
+  margin: 0 8px 16px 0;
+}
+
+.title-form-field {
+  margin: 0 8px 16px 0;
+  margin-top: 12px;
+  margin-right: 25px;
+}
+
+.execute-analysis-btn {
+  margin-top: 10px;
+  margin-left: 12px;
+  border-style: none;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  height: 40px;
+  background-color: #BAFFD0;
+  border-radius: 6px;
+}
+
+button.mat-raised-button:hover {
+  background-color: 'blue';
 }
