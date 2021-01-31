@@ -37,8 +37,8 @@ export class AnalyticsComponent implements OnInit {
             tap(indicators => {
               this.datos = indicators;
 
-              if (this.datos['ma-and-price-position'] === '' && this.datos['three-ma'] === ''
-                && this.datos['news-emotions'] === '' && this.datos['three-ma-and-news-emotions']) {
+              if (this.datos['ma-and-price-position'] == "" && this.datos['three-ma'] == ""
+                && this.datos['news-emotions'] == "" && this.datos['three-ma-and-news-emotions'] == "") {
                 this.notAvailableIndicators = true;
               }
 
