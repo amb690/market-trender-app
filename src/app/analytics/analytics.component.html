@@ -1,9 +1,10 @@
+<!-- current indicators -->
 <div class="container-fluid flex" style="background-color:#FBFBFB; width:30%;">
-  <h1 id="current-indicators" style="font-weight:bold;">
+  <h1 class="all-center" style="font-weight:bold;">
     {{ asset }} - Indicadores del día {{currentDate | date:'dd-MM-yyyy'}}
   </h1>
 </div>
-<div id="current-indicators" class="container-fluid">
+<div class="container-fluid all-center">
   <table id="current-indicators-table" class="table">
     <thead>
       <tr>
@@ -117,7 +118,7 @@
     No hay indicadores disponibles para la fecha actual
   </span>
 </div>
-<hr>
+<hr style="border-top: 2px solid black;">
 <div class="container-fluid d-flex justify-content-center item item-1" fxFlex="50%" fxFlexOrder="1" style="margin-top:20px;">
   <h2 class="title-form-field" style="font-weight:bold;">Analizar tendencias pasadas</h2>
   <mat-form-field class="date-form-field" appearance="fill">
@@ -137,31 +138,475 @@
   </div>
 </div>
 
+<!-- trend analysis -->
 <div *ngIf="loadingAnalysis" class="fluid-container d-flex justify-content-center" style="margin-left:auto; margin-right:auto;">
   <mat-spinner [diameter]="40"></mat-spinner>
 </div>
-<div id="trend-analysis" class="container" *ngIf="availableTrends && !loadingAnalysis">
-  <table id="trend-analysis-table" class="table">
-    <thead>
-      <tr>
-        <th style="border-style:none;">Estrategia</th>
-        <th style="border-style:none;">Indicador</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Posición de medias móviles y emociones</td>
-        <td>
-          <div>
-            <span class="badge badge-success even-larger-badge">
-              Compra
-            </span>
-          </div>
-          <div *ngIf="loading" class="fluid-container d-flex justify-content-center" style="margin-left:auto; margin-right:auto;">
-            <mat-spinner [diameter]="40"></mat-spinner>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+<div id="price-ma-trend-analysis" class="container-fluid" *ngIf="availableTrends && !loadingAnalysis">
+  <div class="container-fluid all-center">
+    <p class="price-ma-position-title">Estrategia basada en posiciones de medias móviles y precios</p>
+  </div>
+  <div class="container-fluid all-center">
+    <span style="margin-right:10px;">Beneficio total: </span>
+    <span class="badge badge-light" style="font-size:13px;">
+      {{ trends['ma-and-price-position'].totalRawProfit | number:'1.2-2'}} %
+    </span>
+  </div>
+  <div id="ma-price-position-candles" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de días alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].numProcessedCandlesByIndicator['BUY']">
+      {{ trends['ma-and-price-position'].numProcessedCandlesByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].numProcessedCandlesByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].numProcessedCandlesByIndicator['SELL']">
+      {{ trends['ma-and-price-position'].numProcessedCandlesByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].numProcessedCandlesByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ trends['ma-and-price-position'].numProcessedCandlesByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="ma-price-position-trends" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de tendencias alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].numProcessedTrendsByIndicator['BUY']">
+      {{ trends['ma-and-price-position'].numProcessedTrendsByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].numProcessedTrendsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].numProcessedTrendsByIndicator['SELL']">
+      {{ trends['ma-and-price-position'].numProcessedTrendsByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].numProcessedTrendsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ trends['ma-and-price-position'].numProcessedTrendsByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="ma-price-position-profits" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Beneficios en operaciones alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].profitsByIndicator['BUY']">
+      {{ trends['ma-and-price-position'].profitsByIndicator['BUY'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].profitsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].profitsByIndicator['SELL']">
+      {{ trends['ma-and-price-position'].profitsByIndicator['SELL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].profitsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['ma-and-price-position'].profitsByIndicator['NEUTRAL']">
+      {{ trends['ma-and-price-position'].profitsByIndicator['NEUTRAL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['ma-and-price-position'].profitsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+
+  <div class="container-fluid all-center">
+    <table class="table" *ngIf="trends['ma-and-price-position'].trends?.length>0" style="width: 50%; margin-top:15px;">
+      <thead>
+        <tr>
+          <th style="font-size:14px;">Fecha de apertura</th>
+          <th style="font-size:14px;">Fecha de cierre</th>
+          <th style="font-size:14px;">Precio de apertura</th>
+          <th style="font-size:14px;">Precio de cierre</th>
+          <th style="font-size:14px;">Beneficio</th>
+          <th style="font-size:14px;">Tipo de tendencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trend of trends['ma-and-price-position'].trends">
+          <td>{{ trend.from }}</td>
+          <td>{{ trend.to }}</td>
+          <td>{{ trend.open }}</td>
+          <td>{{ trend.close }}</td>
+          <td>{{ trend.rawProfit | number:'1.2-2' }}%</td>
+          <td *ngIf="trend.type == 'BUY'">
+            <mat-icon inline=true style="font-size: 30px; color: green;">trending_up</mat-icon>
+          </td>
+          <td *ngIf="trend.type == 'SELL'">
+            <mat-icon inline=true style="font-size: 30px; color: red;">trending_down</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="three-ma-trend-analysis" class="container-fluid" *ngIf="availableTrends && !loadingAnalysis" style="margin-top:30px;">
+  <div class="container-fluid all-center">
+    <p class="price-ma-position-title">Estrategia basada en tres medias móviles</p>
+  </div>
+  <div class="container-fluid all-center">
+    <span style="margin-right:10px;">Beneficio total: </span>
+    <span class="badge badge-light" style="font-size:13px;">
+      {{ trends['three-ma'].totalRawProfit | number:'1.2-2'}} %
+    </span>
+  </div>
+  <div id="ma-price-position-candles" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de días alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].numProcessedCandlesByIndicator['BUY']">
+      {{ trends['three-ma'].numProcessedCandlesByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].numProcessedCandlesByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].numProcessedCandlesByIndicator['SELL']">
+      {{ trends['three-ma'].numProcessedCandlesByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].numProcessedCandlesByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ trends['three-ma'].numProcessedCandlesByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="ma-price-position-trends" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de tendencias alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].numProcessedTrendsByIndicator['BUY']">
+      {{ trends['three-ma'].numProcessedTrendsByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].numProcessedTrendsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].numProcessedTrendsByIndicator['SELL']">
+      {{ trends['three-ma'].numProcessedTrendsByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].numProcessedTrendsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ trends['three-ma'].numProcessedTrendsByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="ma-price-position-profits" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Beneficios en operaciones alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].profitsByIndicator['BUY']">
+      {{ trends['three-ma'].profitsByIndicator['BUY'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].profitsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].profitsByIndicator['SELL']">
+      {{ trends['three-ma'].profitsByIndicator['SELL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].profitsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma'].profitsByIndicator['NEUTRAL']">
+      {{ trends['three-ma'].profitsByIndicator['NEUTRAL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma'].profitsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+
+  <div class="container-fluid all-center">
+    <table class="table" *ngIf="trends['three-ma'].trends?.length>0" style="width: 50%; margin-top:15px;">
+      <thead>
+        <tr>
+          <th style="font-size:14px;">Fecha de apertura</th>
+          <th style="font-size:14px;">Fecha de cierre</th>
+          <th style="font-size:14px;">Precio de apertura</th>
+          <th style="font-size:14px;">Precio de cierre</th>
+          <th style="font-size:14px;">Beneficio</th>
+          <th style="font-size:14px;">Tipo de tendencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trend of trends['three-ma'].trends">
+          <td>{{ trend.from }}</td>
+          <td>{{ trend.to }}</td>
+          <td>{{ trend.open }}</td>
+          <td>{{ trend.close }}</td>
+          <td>{{ trend.rawProfit | number:'1.2-2' }}%</td>
+          <td *ngIf="trend.type == 'BUY'">
+            <mat-icon inline=true style="font-size: 30px; color: green;">trending_up</mat-icon>
+          </td>
+          <td *ngIf="trend.type == 'SELL'">
+            <mat-icon inline=true style="font-size: 30px; color: red;">trending_down</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="news-emotions-analysis" class="container-fluid" *ngIf="availableTrends && !loadingAnalysis" style="margin-top:30px;">
+  <div class="container-fluid all-center">
+    <p class="price-ma-position-title">Estrategia basada en emociones surgidas de noticias</p>
+  </div>
+  <div class="container-fluid all-center">
+    <span style="margin-right:10px;">Beneficio total: </span>
+    <span class="badge badge-light" style="font-size:13px;">
+      {{ trends['news-emotions'].totalRawProfit | number:'1.2-2'}} %
+    </span>
+  </div>
+  <div id="ma-price-position-candles" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de días alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].numProcessedCandlesByIndicator['BUY']">
+      {{ trends['news-emotions'].numProcessedCandlesByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].numProcessedCandlesByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].numProcessedCandlesByIndicator['SELL']">
+      {{ trends['news-emotions'].numProcessedCandlesByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].numProcessedCandlesByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ trends['news-emotions'].numProcessedCandlesByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="ma-price-position-trends" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de tendencias alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].numProcessedTrendsByIndicator['BUY']">
+      {{ trends['news-emotions'].numProcessedTrendsByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].numProcessedTrendsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].numProcessedTrendsByIndicator['SELL']">
+      {{ trends['news-emotions'].numProcessedTrendsByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].numProcessedTrendsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ trends['news-emotions'].numProcessedTrendsByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="ma-price-position-profits" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Beneficios en operaciones alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].profitsByIndicator['BUY']">
+      {{ trends['news-emotions'].profitsByIndicator['BUY'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].profitsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].profitsByIndicator['SELL']">
+      {{ trends['news-emotions'].profitsByIndicator['SELL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].profitsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['news-emotions'].profitsByIndicator['NEUTRAL']">
+      {{ trends['news-emotions'].profitsByIndicator['NEUTRAL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['news-emotions'].profitsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+
+  <div class="container-fluid all-center">
+    <table class="table" *ngIf="trends['news-emotions'].trends?.length>0" style="width: 50%; margin-top:15px;">
+      <thead>
+        <tr>
+          <th style="font-size:14px;">Fecha de apertura</th>
+          <th style="font-size:14px;">Fecha de cierre</th>
+          <th style="font-size:14px;">Precio de apertura</th>
+          <th style="font-size:14px;">Precio de cierre</th>
+          <th style="font-size:14px;">Beneficio</th>
+          <th style="font-size:14px;">Tipo de tendencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trend of trends['news-emotions'].trends">
+          <td>{{ trend.from }}</td>
+          <td>{{ trend.to }}</td>
+          <td>{{ trend.open }}</td>
+          <td>{{ trend.close }}</td>
+          <td>{{ trend.rawProfit | number:'1.2-2' }}%</td>
+          <td *ngIf="trend.type == 'BUY'">
+            <mat-icon inline=true style="font-size: 30px; color: green;">trending_up</mat-icon>
+          </td>
+          <td *ngIf="trend.type == 'SELL'">
+            <mat-icon inline=true style="font-size: 30px; color: red;">trending_down</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="three-ma-and-news-emotions-analysis" class="container-fluid" *ngIf="availableTrends && !loadingAnalysis" style="margin-top:30px;">
+  <div class="container-fluid all-center">
+    <p class="price-ma-position-title">Combinación de estrategia de tres medias móviles y emociones surgidas de noticias</p>
+  </div>
+  <div class="container-fluid all-center">
+    <span style="margin-right:10px;">Beneficio total: </span>
+    <span class="badge badge-light" style="font-size:13px;">
+      {{ trends['three-ma-and-news-emotions'].totalRawProfit | number:'1.2-2'}} %
+    </span>
+  </div>
+  <div id="ma-price-position-candles" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de días alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['BUY']">
+      {{ trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['SELL']">
+      {{ trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de días neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].numProcessedCandlesByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="three-ma-and-news-emotions" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Nº de tendencias alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['BUY']">
+      {{ trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['BUY'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['SELL']">
+      {{ trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['SELL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Nº de tendencias neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['NEUTRAL'] }}
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].numProcessedTrendsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+  <div id="ma-price-position-profits" class="container-fluid all-center" style="margin-top:13px;">
+    <span style="margin-right:10px;">Beneficios en operaciones alcistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].profitsByIndicator['BUY']">
+      {{ trends['three-ma-and-news-emotions'].profitsByIndicator['BUY'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].profitsByIndicator['BUY']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones bajistas</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].profitsByIndicator['SELL']">
+      {{ trends['three-ma-and-news-emotions'].profitsByIndicator['SELL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].profitsByIndicator['SELL']">
+      {{ 0 }}
+    </span>
+
+    <span style="margin-right:10px;">Beneficios en operaciones neutrales</span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="trends['three-ma-and-news-emotions'].profitsByIndicator['NEUTRAL']">
+      {{ trends['three-ma-and-news-emotions'].profitsByIndicator['NEUTRAL'] | number:'1.2-2' }} %
+    </span>
+    <span class="badge badge-light" style="font-size:13px; margin-right:15px;" *ngIf="!trends['three-ma-and-news-emotions'].profitsByIndicator['NEUTRAL']">
+      {{ 0 }}
+    </span>
+  </div>
+
+  <div class="container-fluid all-center">
+    <table class="table" *ngIf="trends['three-ma-and-news-emotions'].trends?.length>0" style="width: 50%; margin-top:15px;">
+      <thead>
+        <tr>
+          <th style="font-size:14px;">Fecha de apertura</th>
+          <th style="font-size:14px;">Fecha de cierre</th>
+          <th style="font-size:14px;">Precio de apertura</th>
+          <th style="font-size:14px;">Precio de cierre</th>
+          <th style="font-size:14px;">Beneficio</th>
+          <th style="font-size:14px;">Tipo de tendencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let trend of trends['three-ma-and-news-emotions'].trends">
+          <td>{{ trend.from }}</td>
+          <td>{{ trend.to }}</td>
+          <td>{{ trend.open }}</td>
+          <td>{{ trend.close }}</td>
+          <td>{{ trend.rawProfit | number:'1.2-2' }}%</td>
+          <td *ngIf="trend.type == 'BUY'">
+            <mat-icon inline=true style="font-size: 30px; color: green;">trending_up</mat-icon>
+          </td>
+          <td *ngIf="trend.type == 'SELL'">
+            <mat-icon inline=true style="font-size: 30px; color: red;">trending_down</mat-icon>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

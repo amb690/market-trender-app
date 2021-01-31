@@ -18,7 +18,7 @@
   font-family: 'Roboto', sans-serif;
 }
 
-#current-indicators {
+.all-center {
   display: flex;
   justify-content: center;
 }
@@ -48,6 +48,34 @@
   border-radius: 6px;
 }
 
-button.mat-raised-button:hover {
-  background-color: 'blue';
+.price-ma-position-title {
+  font-family: "Gill Sans", sans-serif;
+  font-weight: bold;
+  font-size: 19px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table td, table th {
+  border: 1px solid black;
+}
+
+table tr:first-child th {
+  border-top: 0;
+}
+
+table tr:last-child td {
+  border-bottom: 0;
+}
+
+table tr td:first-child,
+table tr th:first-child {
+  border-left: 0;
+}
+
+table tr td:last-child,
+table tr th:last-child {
+  border-right: 0;
 }
