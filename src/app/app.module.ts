@@ -20,13 +20,11 @@ import { AssetsComponent } from './assets/assets.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { AssetsService } from './assets/assets.service';
 import { AnalyticsService } from 'src/app/analytics/analytics.service';
-import { RouteReuseStrategy } from '@angular/router';
-import { CustomReuseStrategy } from 'src/app/assets/reuse-strategy';
 import { DatePipe } from '@angular/common';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'assets' },
-  { path: 'assets', component: AssetsComponent, data: { shouldDetach: true } },
+  { path: 'assets', component: AssetsComponent },
   { path: 'analytics/:asset', component: AnalyticsComponent }
 ];
 
@@ -57,7 +55,6 @@ const routes: Routes = [
   providers: [
     AssetsService,
     AnalyticsService,
-    { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
     MatDatepickerModule,
     MatNativeDateModule,
     DatePipe

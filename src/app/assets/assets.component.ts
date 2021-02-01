@@ -17,9 +17,6 @@ import { MatSort } from '@angular/material/sort';
 
 export class AssetsComponent implements OnInit {
 
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
-
   columns: string[] = ['name', 'ticker', 'ipoDate', 'country', 'exchange', 'sector', 'strategybtn'];
 
   datos: Asset[] = [];
@@ -27,6 +24,9 @@ export class AssetsComponent implements OnInit {
   assets: any;
   loading: boolean;
   err: string;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(private assetsService: AssetsService) { }
 
