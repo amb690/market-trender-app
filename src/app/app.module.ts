@@ -22,6 +22,9 @@ import { AssetsService } from './assets/assets.service';
 import { AnalyticsService } from 'src/app/analytics/analytics.service';
 import { DatePipe } from '@angular/common';
 
+import { RouteReuseStrategy } from '@angular/router';
+import { CacheRouteReuseStrategy } from './cache-route-reuse-strategy';
+
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'assets' },
   { path: 'assets', component: AssetsComponent },
@@ -57,7 +60,11 @@ const routes: Routes = [
     AnalyticsService,
     MatDatepickerModule,
     MatNativeDateModule,
-    DatePipe
+    DatePipe,
+    {
+      provide: RouteReuseStrategy,
+      useClass: CacheRouteReuseStrategy
+    }
   ],
   bootstrap: [AppComponent]
 })
